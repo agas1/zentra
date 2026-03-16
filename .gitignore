@@ -1,0 +1,18 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+backend/.env
+backend/.env.local
+!backend/.env.example
+!backend/.env.production.example
+frontend/.env
+frontend/.env.local
+!frontend/.env.production

@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('workspaces', function (Blueprint $table) {
+            $table->string('stripe_customer_id')->nullable()->index()->after('owner_id');
+            $table->string('stripe_subscription_id')->nullable()->after('stripe_customer_id');
+            $table->string('subscription_status')->default('none')->after('stripe_subscription_id');
+            $table->string('billing_cycle')->default('monthly')->after('subscription_status');
+            $table->timestamp('subscription_ends_at')->nullable()->after('billing_cycle');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('workspaces', function (Blueprint $table) {
+            $table->dropColumn([
+                'stripe_customer_id',
+                'stripe_subscription_id',
+                'subscription_status',
+                'billing_cycle',
+                'subscription_ends_at',
+            ]);
+        });
+    }
+};
