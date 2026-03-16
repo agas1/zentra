@@ -16,10 +16,15 @@ php artisan db:seed --class=PlanSeeder --force 2>/dev/null || true
 
 # Upgrade dev account to Business plan
 php artisan tinker --execute="
-\$ws = \App\Domain\Workspace\Models\Workspace::whereHas('members', fn(\$q) => \$q->where('email', 'dev@master.com.br'))->first();
-if (\$ws) {
+\$user = \App\Domain\User\Models\User::where('email', 'dev@master.com.br')->first();
+if (\$user) {
     \$plan = \App\Domain\Plan\Models\Plan::where('slug', 'business')->first();
-    if (\$plan) { \$ws->update(['plan_id' => \$plan->id]); echo 'Upgraded to Business'; }
+    if (\$plan) {
+        foreach (\$user->workspaces as \$ws) {
+            \$ws->update(['plan_id' => \$plan->id]);
+        }
+        echo 'Upgraded to Business';
+    }
 }
 " 2>/dev/null || true
 
