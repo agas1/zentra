@@ -23,7 +23,7 @@ Route::middleware(['jwt', 'workspace'])->prefix('workspaces/{workspace}')->group
 
     Route::get('/invitations', [InvitationController::class, 'index'])->middleware('workspace.role:owner,admin');
     Route::post('/invitations', [InvitationController::class, 'store'])->middleware('workspace.role:owner,admin');
-    Route::delete('/invitations/{invitation}', [InvitationController::class, 'destroy'])->middleware('workspace.role:owner,admin');
+    Route::delete('/invitations/{invitationId}', [InvitationController::class, 'destroy'])->middleware('workspace.role:owner,admin');
 
     Route::post('/upgrade', [WorkspaceController::class, 'upgrade'])->middleware('workspace.role:owner');
 });
