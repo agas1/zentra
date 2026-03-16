@@ -33,7 +33,7 @@ class InvitationController extends Controller
 
         $memberCount = $workspace->members()->count();
 
-        if (($memberCount + $pendingCount) >= $workspace->plan->max_members) {
+        if ($workspace->plan->max_members >= 0 && ($memberCount + $pendingCount) >= $workspace->plan->max_members) {
             return response()->json([
                 'error' => [
                     'code' => 'MEMBER_LIMIT_REACHED',

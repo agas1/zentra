@@ -87,6 +87,7 @@ class Workspace extends Model
 
     public function canAddMember(): bool
     {
+        if ($this->plan->max_members < 0) return true;
         return $this->members()->count() < $this->plan->max_members;
     }
 
