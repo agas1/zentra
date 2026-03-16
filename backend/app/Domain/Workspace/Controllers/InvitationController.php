@@ -98,8 +98,12 @@ class InvitationController extends Controller
         ], 201);
     }
 
-    public function destroy(Request $request, Invitation $invitation)
+    public function destroy(Request $request, string $invitationId)
     {
+        $invitation = Invitation::where('id', $invitationId)
+            ->where('workspace_id', $request->workspace->id)
+            ->firstOrFail();
+
         $invitation->delete();
 
         return response()->json(['message' => 'Invitation cancelled successfully']);
