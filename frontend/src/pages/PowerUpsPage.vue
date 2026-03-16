@@ -65,7 +65,7 @@ function closeConfig() {
       <Zap :size="56" class="text-[#8b949e] mx-auto mb-5" />
       <h3 class="text-xl font-semibold text-[#e6edf3] mb-3">Power-Ups disponiveis no plano Pro</h3>
       <p class="text-base text-[#8b949e] mb-6 max-w-md mx-auto">
-        Conecte o Orbita com Slack, Google Calendar, Google Drive e mais.
+        Conecte o Zentra com Slack, Google Calendar, Google Drive e mais.
         Faca upgrade para o plano {{ requiredPlanForFeature('power_ups') }} para desbloquear.
       </p>
       <router-link to="/plans" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#6366f1] text-white text-sm font-medium hover:bg-[#5558e6] transition-colors">

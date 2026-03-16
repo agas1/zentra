@@ -434,7 +434,7 @@ function getButtonLabel(plan) {
     <!-- Comparison footer -->
     <div class="max-w-3xl mx-auto mt-10 text-center animate-fade-in-up" style="animation-delay: 0.5s">
       <div class="bg-[#161b22] border border-[#444c56] rounded-2xl p-6">
-        <h3 class="font-bold text-[#e6edf3] mb-2">Por que Orbita e diferente?</h3>
+        <h3 class="font-bold text-[#e6edf3] mb-2">Por que Zentra e diferente?</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-[#8b949e] mt-4">
           <div>
             <div class="w-10 h-10 rounded-xl bg-[#d29922]/15 flex items-center justify-center mx-auto mb-2">

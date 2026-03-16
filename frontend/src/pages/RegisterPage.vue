@@ -14,7 +14,7 @@
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#818cf8] flex items-center justify-center hover-rotate shadow-lg shadow-indigo-500/30">
             <Palette :size="22" color="#fff" />
           </div>
-          <span class="text-xl font-bold text-white/90">Orbita</span>
+          <span class="text-xl font-bold text-white/90">Zentra</span>
         </div>
 
         <!-- Step indicator -->
@@ -37,7 +37,7 @@
           {{ step === 1 ? 'Crie sua conta' : 'Qual melhor descreve voce?' }}
         </h1>
         <p class="text-white/40 mb-6 animate-fade-in-up stagger-2">
-          {{ step === 1 ? 'Comece a gerenciar seus projetos criativos com o Orbita. E gratis!' : 'Isso nos ajuda a personalizar sua experiencia.' }}
+          {{ step === 1 ? 'Comece a gerenciar seus projetos criativos com o Zentra. E gratis!' : 'Isso nos ajuda a personalizar sua experiencia.' }}
         </p>
 
         <!-- Error -->
@@ -223,7 +223,7 @@
         <div v-if="imgError" class="w-full max-w-sm mx-auto mb-8 h-64 rounded-2xl glass-elevated flex items-center justify-center animate-scale-in">
           <div class="text-center">
             <Palette :size="48" class="text-[#818cf8] mx-auto mb-3 animate-wiggle" />
-            <p class="text-white/40 text-sm">Orbita Design Platform</p>
+            <p class="text-white/40 text-sm">Zentra Design Platform</p>
           </div>
         </div>
 
@@ -237,7 +237,7 @@
           </div>
           <div class="text-left">
             <p class="text-sm font-bold text-white/90">+500 equipes</p>
-            <p class="text-xs text-white/40">ja usam o Orbita</p>
+            <p class="text-xs text-white/40">ja usam o Zentra</p>
           </div>
         </div>
 

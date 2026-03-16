@@ -47,7 +47,7 @@ class SlackService
     {
         try {
             $response = Http::timeout(5)->post($webhookUrl, [
-                'text' => '🎉 Orbita conectado com sucesso! Voce recebera notificacoes aqui.',
+                'text' => '🎉 Zentra conectado com sucesso! Voce recebera notificacoes aqui.',
             ]);
 
             return $response->successful();

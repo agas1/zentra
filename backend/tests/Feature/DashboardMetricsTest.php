@@ -46,7 +46,7 @@ class DashboardMetricsTest extends TestCase
         // Create user
         $this->user = User::create([
             'name' => 'Test User',
-            'email' => 'test@orbita.com',
+            'email' => 'test@zentra.com',
             'password' => 'password',
         ]);
 

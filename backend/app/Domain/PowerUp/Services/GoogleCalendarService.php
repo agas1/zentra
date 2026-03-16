@@ -77,7 +77,7 @@ class GoogleCalendarService
             return null;
         }
 
-        $boardName = $card->board?->name ?? 'Orbita';
+        $boardName = $card->board?->name ?? 'Zentra';
         $listName = $card->list?->name ?? '';
 
         $eventData = [

@@ -783,7 +783,7 @@ function onKanbanWheel(e) {
     </div>
 
     <!-- Guided Tour -->
-    <GuidedTour ref="tourRef" :steps="tourSteps" storage-key="orbita_tour_board_done" />
+    <GuidedTour ref="tourRef" :steps="tourSteps" storage-key="zentra_tour_board_done" />
 
     <!-- Card detail modal -->
     <CardDetailModal

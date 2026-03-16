@@ -19,7 +19,7 @@
         <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#818cf8] flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/25">
           <Palette :size="16" color="#fff" />
         </div>
-        <span class="text-lg font-bold text-white/90 whitespace-nowrap ml-3 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 overflow-hidden">Orbita</span>
+        <span class="text-lg font-bold text-white/90 whitespace-nowrap ml-3 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-300 overflow-hidden">Zentra</span>
       </div>
 
       <!-- Workspace pill -->
@@ -237,7 +237,7 @@ const pageTitle = computed(() => {
   if (route.name === 'api-keys') return 'API Keys'
   if (route.name === 'power-ups') return 'Power-Ups'
   if (route.name === 'templates') return 'Templates'
-  return 'Orbita'
+  return 'Zentra'
 })
 
 const navItems = computed(() => {

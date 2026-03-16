@@ -13,7 +13,7 @@ export const useWorkspaceStore = defineStore('workspace', () => {
   const planUsage = ref(null)
 
   // Load workspace ID from localStorage on init
-  const savedId = localStorage.getItem('orbita_workspace_id')
+  const savedId = localStorage.getItem('zentra_workspace_id')
 
   // Request deduplication - prevent duplicate API calls
   let _fetchWorkspacesPromise = null
@@ -41,7 +41,7 @@ export const useWorkspaceStore = defineStore('workspace', () => {
 
   function setCurrentWorkspace(workspace) {
     currentWorkspace.value = workspace
-    localStorage.setItem('orbita_workspace_id', workspace.id)
+    localStorage.setItem('zentra_workspace_id', workspace.id)
   }
 
   async function createWorkspace(data) {
@@ -142,7 +142,7 @@ export const useWorkspaceStore = defineStore('workspace', () => {
     invitations.value = []
     plans.value = []
     planUsage.value = null
-    localStorage.removeItem('orbita_workspace_id')
+    localStorage.removeItem('zentra_workspace_id')
   }
 
   const currentRole = computed(() => {

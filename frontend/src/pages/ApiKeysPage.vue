@@ -208,10 +208,10 @@ const activeCodeTab = ref('curl')
 const useCases = [
   { title: 'Automacao com Zapier/n8n', desc: 'Crie cards automaticamente quando receber um email, formulario ou lead no CRM.' },
   { title: 'Dashboard no Power BI', desc: 'Puxe dados dos boards para criar relatorios e dashboards personalizados.' },
-  { title: 'Integracao com CRM', desc: 'Sincronize deals do seu CRM com cards no Orbita automaticamente.' },
+  { title: 'Integracao com CRM', desc: 'Sincronize deals do seu CRM com cards no Zentra automaticamente.' },
   { title: 'Chatbot / Suporte', desc: 'Crie cards a partir de tickets de suporte ou mensagens de chatbot.' },
   { title: 'CI/CD Pipeline', desc: 'Mova cards automaticamente quando um deploy e feito ou um bug e reportado.' },
-  { title: 'App Customizado', desc: 'Construa sua propria interface ou app que leia e escreva dados no Orbita.' },
+  { title: 'App Customizado', desc: 'Construa sua propria interface ou app que leia e escreva dados no Zentra.' },
 ]
 
 const howItWorksSteps = [
@@ -337,7 +337,7 @@ function formatDateTime(date) {
         <Key :size="48" class="text-[#8b949e] mx-auto mb-4" />
         <h3 class="text-lg font-semibold text-[#e6edf3] mb-2">API disponivel no plano Business</h3>
         <p class="text-sm text-[#8b949e] mb-4 max-w-md mx-auto">
-          Integre o Orbita com suas ferramentas externas via API REST.
+          Integre o Zentra com suas ferramentas externas via API REST.
           Automatize criacao de cards, sincronize dados e muito mais.
         </p>
         <router-link
@@ -385,9 +385,9 @@ function formatDateTime(date) {
               O que e a API?
             </h3>
             <p class="text-sm text-[#8b949e] leading-relaxed">
-              A API permite conectar o Orbita com qualquer sistema externo.
+              A API permite conectar o Zentra com qualquer sistema externo.
               Automatize tarefas, crie integracoes personalizadas
-              e sincronize dados entre o Orbita e suas ferramentas.
+              e sincronize dados entre o Zentra e suas ferramentas.
             </p>
           </div>
 

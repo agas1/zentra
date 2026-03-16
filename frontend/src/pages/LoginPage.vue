@@ -15,13 +15,13 @@
           <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#818cf8] flex items-center justify-center hover-rotate shadow-lg shadow-indigo-500/30">
             <Palette :size="22" color="#fff" />
           </div>
-          <span class="text-xl font-bold text-white/90">Orbita</span>
+          <span class="text-xl font-bold text-white/90">Zentra</span>
         </div>
 
         <!-- Welcome text -->
         <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2 animate-fade-in-up stagger-1">Bem-vindo de volta!</h1>
         <p class="text-white/45 mb-8 animate-fade-in-up stagger-2">
-          Simplifique seu fluxo de trabalho e aumente sua produtividade com o <span class="font-semibold gradient-text">Orbita</span>. Comece gratuitamente.
+          Simplifique seu fluxo de trabalho e aumente sua produtividade com o <span class="font-semibold gradient-text">Zentra</span>. Comece gratuitamente.
         </p>
 
         <!-- Error -->
@@ -149,7 +149,7 @@
         <div v-if="imgError" class="w-full max-w-sm mx-auto mb-8 h-64 rounded-2xl glass-elevated flex items-center justify-center animate-scale-in">
           <div class="text-center">
             <Palette :size="48" class="text-[#818cf8] mx-auto mb-3 animate-wiggle" />
-            <p class="text-white/40 text-sm">Orbita Design Platform</p>
+            <p class="text-white/40 text-sm">Zentra Design Platform</p>
           </div>
         </div>
 
@@ -160,7 +160,7 @@
             <Palette :size="18" color="#fff" />
           </div>
           <div class="text-left">
-            <p class="text-sm font-bold text-white/90">Orbita Design</p>
+            <p class="text-sm font-bold text-white/90">Zentra Design</p>
             <p class="text-xs text-white/40">Gestao criativa</p>
           </div>
           <div class="ml-3 relative w-10 h-10">
@@ -174,7 +174,7 @@
 
         <!-- Bottom text -->
         <h2 class="text-2xl font-bold text-white/85 leading-snug animate-fade-in-up" style="animation-delay: 0.6s">
-          Organize seus projetos criativos<br />com o <span class="gradient-text">Orbita</span>
+          Organize seus projetos criativos<br />com o <span class="gradient-text">Zentra</span>
         </h2>
       </div>
     </div>

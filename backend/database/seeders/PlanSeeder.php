@@ -13,7 +13,7 @@ class PlanSeeder extends Seeder
             ['slug' => 'free'],
             [
                 'name' => 'Free',
-                'description' => 'Para experimentar o Orbita com projetos pessoais.',
+                'description' => 'Para experimentar o Zentra com projetos pessoais.',
                 'max_members' => 2,
                 'max_boards' => 5,
                 'max_storage_mb' => 100,

@@ -76,7 +76,7 @@ const routes = [
           const workspaceId = route.query.workspace
           if (token) {
             try {
-              localStorage.setItem('orbita_token', token)
+              localStorage.setItem('zentra_token', token)
               authStore.token = token
               await authStore.fetchMe()
               if (workspaceId) {
@@ -166,7 +166,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       await authStore.fetchMe()
     } catch {
-      localStorage.removeItem('orbita_token')
+      localStorage.removeItem('zentra_token')
       return next('/login')
     }
   }

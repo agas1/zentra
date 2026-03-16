@@ -11,7 +11,7 @@
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#388bfd] flex items-center justify-center">
             <Palette :size="18" color="#fff" />
           </div>
-          <span class="text-lg font-bold">Orbita</span>
+          <span class="text-lg font-bold">Zentra</span>
         </div>
 
         <!-- Desktop Nav -->
@@ -114,7 +114,7 @@
               <div class="w-3 h-3 rounded-full bg-[#d29922]/60" />
               <div class="w-3 h-3 rounded-full bg-[#3fb950]/60" />
               <div class="ml-4 flex-1 h-6 bg-[#0d1117] rounded-md flex items-center px-3">
-                <span class="text-[10px] text-[#6e7681]">app.orbita.io</span>
+                <span class="text-[10px] text-[#6e7681]">app.zentra.io</span>
               </div>
             </div>
 
@@ -215,7 +215,7 @@
     <!-- Logos / Social Proof -->
     <section class="py-16 border-y border-[#444c56]/30">
       <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <p class="text-center text-xs text-[#6e7681] uppercase tracking-[0.3em] mb-8">Para quem e o Orbita</p>
+        <p class="text-center text-xs text-[#6e7681] uppercase tracking-[0.3em] mb-8">Para quem e o Zentra</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <div v-for="persona in personas" :key="persona.title" class="flex flex-col items-center text-center p-6 rounded-xl border border-transparent hover:border-[#444c56]/50 hover:bg-[#161b22]/50 transition-all duration-300">
             <div class="w-12 h-12 rounded-xl bg-[#161b22] border border-[#444c56]/50 flex items-center justify-center mb-3">
@@ -442,7 +442,7 @@
       <div class="max-w-5xl mx-auto px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-4xl sm:text-5xl font-light tracking-tight mb-4">
-            Por que <span class="gradient-text font-semibold">Orbita</span>?
+            Por que <span class="gradient-text font-semibold">Zentra</span>?
           </h2>
         </div>
 
@@ -467,7 +467,7 @@
           Pronto para <span class="italic">comecar</span>?
         </h2>
         <p class="text-[#8b949e] text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Junte-se a equipes criativas que ja usam o Orbita para entregar projetos incriveis.
+          Junte-se a equipes criativas que ja usam o Zentra para entregar projetos incriveis.
         </p>
         <router-link
           to="/register"
@@ -487,9 +487,9 @@
           <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-[#6366f1] to-[#388bfd] flex items-center justify-center">
             <Palette :size="12" color="#fff" />
           </div>
-          <span class="text-sm font-semibold">Orbita</span>
+          <span class="text-sm font-semibold">Zentra</span>
         </div>
-        <p class="text-xs text-[#6e7681]">&copy; {{ new Date().getFullYear() }} Orbita. Todos os direitos reservados.</p>
+        <p class="text-xs text-[#6e7681]">&copy; {{ new Date().getFullYear() }} Zentra. Todos os direitos reservados.</p>
       </div>
     </footer>
   </div>

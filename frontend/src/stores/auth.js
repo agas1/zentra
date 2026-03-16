@@ -7,7 +7,7 @@ import router from '../router'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
-  const token = ref(localStorage.getItem('orbita_token') || null)
+  const token = ref(localStorage.getItem('zentra_token') || null)
 
   const isAuthenticated = computed(() => !!token.value)
 
@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', () => {
     const response = await authApi.login({ email, password })
     token.value = response.data.data.token
     user.value = response.data.data.user
-    localStorage.setItem('orbita_token', token.value)
+    localStorage.setItem('zentra_token', token.value)
     return response.data.data
   }
 
@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
     const response = await authApi.register(data)
     token.value = response.data.data.token
     user.value = response.data.data.user
-    localStorage.setItem('orbita_token', token.value)
+    localStorage.setItem('zentra_token', token.value)
     return response.data.data
   }
 
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function handleGoogleCallback(callbackToken) {
     token.value = callbackToken
-    localStorage.setItem('orbita_token', callbackToken)
+    localStorage.setItem('zentra_token', callbackToken)
     await fetchMe()
   }
 
@@ -47,7 +47,7 @@ export const useAuthStore = defineStore('auth', () => {
     const oldToken = token.value
     token.value = null
     user.value = null
-    localStorage.removeItem('orbita_token')
+    localStorage.removeItem('zentra_token')
     const workspaceStore = useWorkspaceStore()
     workspaceStore.clearWorkspace()
     router.push('/login')
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function refresh() {
     const response = await authApi.refresh()
     token.value = response.data.data.token
-    localStorage.setItem('orbita_token', token.value)
+    localStorage.setItem('zentra_token', token.value)
   }
 
   async function fetchMe() {

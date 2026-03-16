@@ -37,7 +37,7 @@ class SyncStripePlansCommand extends Command
 
             // Create or find Stripe Product
             $product = Product::create([
-                'name' => "Orbita {$plan->name}",
+                'name' => "Zentra {$plan->name}",
                 'description' => $plan->description,
                 'metadata' => [
                     'plan_id' => $plan->id,

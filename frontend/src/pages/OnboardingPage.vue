@@ -6,7 +6,7 @@
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366f1] to-[#388bfd] flex items-center justify-center">
           <Palette :size="22" color="#fff" />
         </div>
-        <span class="text-xl font-bold text-[#e6edf3]">Orbita</span>
+        <span class="text-xl font-bold text-[#e6edf3]">Zentra</span>
       </div>
 
       <h1 class="text-3xl font-bold text-[#e6edf3] mb-2 animate-fade-in-up">Qual melhor descreve voce?</h1>

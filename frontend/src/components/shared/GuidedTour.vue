@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick, inject } from '
 
 const props = defineProps({
   steps: { type: Array, required: true },
-  storageKey: { type: String, default: 'orbita_tour_board_done' },
+  storageKey: { type: String, default: 'zentra_tour_board_done' },
   autoStart: { type: Boolean, default: true },
 })
 const emit = defineEmits(['complete', 'skip'])

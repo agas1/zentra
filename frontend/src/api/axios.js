@@ -7,11 +7,11 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('orbita_token')
+  const token = localStorage.getItem('zentra_token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
-  const workspaceId = localStorage.getItem('orbita_workspace_id')
+  const workspaceId = localStorage.getItem('zentra_workspace_id')
   if (workspaceId) {
     config.headers['X-Workspace-Id'] = workspaceId
   }
@@ -43,7 +43,7 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (originalRequest.url?.includes('/auth/refresh') || originalRequest.url?.includes('/auth/login')) {
-        localStorage.removeItem('orbita_token')
+        localStorage.removeItem('zentra_token')
         router.push('/login')
         return Promise.reject(error)
       }
@@ -63,13 +63,13 @@ api.interceptors.response.use(
       try {
         const refreshResponse = await api.post('/auth/refresh')
         const newToken = refreshResponse.data.data.token
-        localStorage.setItem('orbita_token', newToken)
+        localStorage.setItem('zentra_token', newToken)
         originalRequest.headers.Authorization = `Bearer ${newToken}`
         processQueue(null, newToken)
         return api(originalRequest)
       } catch (refreshError) {
         processQueue(refreshError, null)
-        localStorage.removeItem('orbita_token')
+        localStorage.removeItem('zentra_token')
         router.push('/login')
         return Promise.reject(refreshError)
       } finally {
