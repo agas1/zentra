@@ -2,10 +2,12 @@
 
 namespace App\Domain\Workspace\Controllers;
 
+use App\Domain\Workspace\Mail\InvitationMail;
 use App\Domain\Workspace\Models\Invitation;
 use App\Domain\Workspace\Requests\InviteMemberRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class InvitationController extends Controller
 {
@@ -75,6 +77,20 @@ class InvitationController extends Controller
             'invited_by_id' => auth()->id(),
             'expires_at' => now()->addDays(7),
         ]);
+
+        $frontendUrl = config('app.frontend_url', env('FRONTEND_URL', 'http://localhost:5173'));
+        $acceptUrl = $frontendUrl . '/invitation/' . $invitation->token;
+
+        try {
+            Mail::to($email)->send(new InvitationMail(
+                invitation: $invitation,
+                workspaceName: $workspace->name,
+                inviterName: auth()->user()->name,
+                acceptUrl: $acceptUrl,
+            ));
+        } catch (\Throwable $e) {
+            \Log::warning('Failed to send invitation email: ' . $e->getMessage());
+        }
 
         return response()->json([
             'data' => $invitation,
