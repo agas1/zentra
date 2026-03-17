@@ -5,6 +5,7 @@ cd /var/www/html
 
 # Cache config for production
 php artisan config:cache
+php artisan route:clear
 php artisan view:cache
 
 # Create storage link
