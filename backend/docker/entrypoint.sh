@@ -15,44 +15,43 @@ php artisan storage:link --force 2>/dev/null || true
 php artisan migrate --force
 php artisan db:seed --class=PlanSeeder --force 2>/dev/null || true
 
-# Upgrade dev account to Business plan
-php artisan tinker --execute="
-\$user = \App\Domain\User\Models\User::where('email', 'dev@master.com.br')->first();
-if (\$user) {
-    \$plan = \App\Domain\Plan\Models\Plan::where('slug', 'business')->first();
-    if (\$plan) {
-        foreach (\$user->workspaces as \$ws) {
-            \$ws->update(['plan_id' => \$plan->id]);
-        }
-        echo 'Upgraded to Business';
-    }
-}
-" 2>/dev/null || true
+# Setup admin accounts via env vars (no credentials in code)
+# ADMIN_EMAIL: upgrade this user's workspace to Business plan
+# ADMIN_MEMBER_EMAIL: add as admin to ADMIN_EMAIL's workspace
+# ADMIN_MEMBER_PASSWORD: reset password for ADMIN_MEMBER_EMAIL
+if [ -n "$ADMIN_EMAIL" ]; then
+  php artisan tinker --execute="
+  \$user = \App\Domain\User\Models\User::where('email', env('ADMIN_EMAIL'))->first();
+  if (\$user) {
+      \$plan = \App\Domain\Plan\Models\Plan::where('slug', 'business')->first();
+      if (\$plan) {
+          foreach (\$user->workspaces as \$ws) { \$ws->update(['plan_id' => \$plan->id]); }
+          echo 'Upgraded to Business';
+      }
+  }
+  " 2>/dev/null || true
+fi
 
-# Reset password for avicmaximog@gmail.com
-php artisan tinker --execute="
-\$user = \App\Domain\User\Models\User::where('email', 'avicmaximog@gmail.com')->first();
-if (\$user) { \$user->update(['password' => 'Avic@2026']); echo 'Password reset'; }
-" 2>/dev/null || true
+if [ -n "$ADMIN_MEMBER_EMAIL" ] && [ -n "$ADMIN_EMAIL" ]; then
+  php artisan tinker --execute="
+  \$owner = \App\Domain\User\Models\User::where('email', env('ADMIN_EMAIL'))->first();
+  \$member = \App\Domain\User\Models\User::where('email', env('ADMIN_MEMBER_EMAIL'))->first();
+  if (\$owner && \$member) {
+      \$ws = \$owner->workspaces()->first();
+      if (\$ws && !\$ws->members()->where('user_id', \$member->id)->exists()) {
+          \$ws->members()->attach(\$member->id, ['role' => 'admin']);
+          echo 'Added member as admin';
+      }
+  }
+  " 2>/dev/null || true
+fi
 
-# Add avicmaximog@gmail.com as admin to dev@master.com.br workspace
-php artisan tinker --execute="
-\$owner = \App\Domain\User\Models\User::where('email', 'dev@master.com.br')->first();
-\$member = \App\Domain\User\Models\User::where('email', 'avicmaximog@gmail.com')->first();
-if (\$owner && \$member) {
-    \$ws = \$owner->workspaces()->first();
-    if (\$ws && !\$ws->members()->where('user_id', \$member->id)->exists()) {
-        \$ws->members()->attach(\$member->id, ['role' => 'admin']);
-        echo 'Added avicmaximog as admin';
-    } else { echo 'Already member or not found'; }
-}
-" 2>/dev/null || true
-
-# Clear all pending invitations (one-time cleanup)
-php artisan tinker --execute="
-\App\Domain\Workspace\Models\Invitation::whereNull('accepted_at')->delete();
-echo 'Cleared pending invitations';
-" 2>/dev/null || true
+if [ -n "$ADMIN_MEMBER_EMAIL" ] && [ -n "$ADMIN_MEMBER_PASSWORD" ]; then
+  php artisan tinker --execute="
+  \$user = \App\Domain\User\Models\User::where('email', env('ADMIN_MEMBER_EMAIL'))->first();
+  if (\$user) { \$user->password = \Illuminate\Support\Facades\Hash::make(env('ADMIN_MEMBER_PASSWORD')); \$user->save(); echo 'Password reset'; }
+  " 2>/dev/null || true
+fi
 
 # Start supervisor (nginx + php-fpm + queue worker)
 exec /usr/bin/supervisord -c /etc/supervisord.conf
