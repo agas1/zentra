@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted, inject, computed } from 'vue'
+import { useMediaUrl } from '../../composables/useMediaUrl'
 import { useCardStore } from '../../stores/card'
 import { useBoardsStore } from '../../stores/boards'
 import { useWorkspaceStore } from '../../stores/workspace'
@@ -24,6 +25,7 @@ const emit = defineEmits(['close', 'updated', 'archive'])
 
 const cardStore = useCardStore()
 const boardsStore = useBoardsStore()
+const { fullUrl } = useMediaUrl()
 const workspaceStore = useWorkspaceStore()
 const powerUpsStore = usePowerUpsStore()
 const isDark = inject('boardIsDark', ref(true))
@@ -354,7 +356,7 @@ function timeAgo(date) {
           </div>
         </div>
         <!-- Cover -->
-        <div v-if="cardStore.card.cover_url" class="h-36 bg-cover bg-center rounded-t-xl" :style="{ backgroundImage: `url(${cardStore.card.cover_url})` }" />
+        <div v-if="cardStore.card.cover_url" class="h-36 bg-cover bg-center rounded-t-xl" :style="{ backgroundImage: `url(${fullUrl(cardStore.card.cover_url)})` }" />
 
         <!-- Close -->
         <button class="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-colors z-20" :class="isDark ? 'bg-[#2d333b]/80 hover:bg-[#2d333b] text-[#8b949e]' : 'bg-gray-200/80 hover:bg-gray-200 text-gray-500'" aria-label="Fechar" @click="close">

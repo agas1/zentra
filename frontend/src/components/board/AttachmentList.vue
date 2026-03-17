@@ -1,5 +1,6 @@
 <script setup>
 import { ref, inject, computed } from 'vue'
+import { useMediaUrl } from '../../composables/useMediaUrl'
 
 const props = defineProps({
   attachments: { type: Array, default: () => [] },
@@ -9,6 +10,7 @@ const emit = defineEmits(['set-cover', 'delete'])
 const isDark = inject('boardIsDark', ref(true))
 const searchQuery = ref('')
 const previewUrl = ref(null)
+const { fullUrl } = useMediaUrl()
 
 const filteredAttachments = computed(() => {
   if (!searchQuery.value) return props.attachments
@@ -52,7 +54,7 @@ const fileIconColors = {
 
 function openPreview(att) {
   if (isImage(att.mime_type)) {
-    previewUrl.value = att.url
+    previewUrl.value = fullUrl(att.url)
   }
 }
 
@@ -93,7 +95,7 @@ function isExternal(att) {
           class="w-20 h-14 rounded flex-shrink-0 flex items-center justify-center overflow-hidden cursor-pointer"
           @click="openPreview(att)"
         >
-          <img v-if="isImage(att.mime_type) && !isExternal(att)" :src="att.url" class="w-full h-full object-cover" />
+          <img v-if="isImage(att.mime_type) && !isExternal(att)" :src="fullUrl(att.url)" class="w-full h-full object-cover" />
           <!-- Google Drive icon -->
           <div v-else-if="isExternal(att)" class="flex flex-col items-center gap-0.5">
             <svg class="w-5 h-5 text-[#4285F4]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
@@ -112,7 +114,7 @@ function isExternal(att) {
           <div :class="isDark ? 'text-[#6e7681]' : 'text-gray-500'" class="flex items-center gap-2 text-xs mt-0.5 flex-wrap">
             <span v-if="att.size">{{ formatSize(att.size) }}</span>
             <span v-if="isExternal(att)" class="text-[#4285F4]">Google Drive</span>
-            <a :href="att.url" target="_blank" class="hover:text-[#6366f1]">{{ isExternal(att) ? 'Abrir' : 'Download' }}</a>
+            <a :href="fullUrl(att.url)" target="_blank" class="hover:text-[#6366f1]">{{ isExternal(att) ? 'Abrir' : 'Download' }}</a>
             <button v-if="isImage(att.mime_type) && !isExternal(att)" class="hover:text-[#6366f1]" @click="emit('set-cover', att.id)">
               {{ att.is_cover ? 'Capa atual' : 'Usar como capa' }}
             </button>

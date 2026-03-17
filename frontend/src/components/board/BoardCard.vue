@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, inject } from 'vue'
+import { useMediaUrl } from '../../composables/useMediaUrl'
 
 const props = defineProps({
   card: { type: Object, required: true },
@@ -7,6 +8,7 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const isDark = inject('boardIsDark', ref(true))
+const { fullUrl } = useMediaUrl()
 
 const hasChecklist = computed(() => props.card.checklists?.some(c => c.items?.length > 0))
 const checklistTotal = computed(() => props.card.checklists?.reduce((sum, c) => sum + (c.items?.length || 0), 0) || 0)
@@ -59,7 +61,7 @@ function formatDueDate(date) {
     </button>
 
     <!-- Cover Image -->
-    <div v-if="card.cover_url" class="h-36 rounded-t-lg bg-cover bg-center" role="img" :aria-label="`Capa do cartao ${card.title}`" :style="{ backgroundImage: `url(${card.cover_url})` }" />
+    <div v-if="card.cover_url" class="h-36 rounded-t-lg bg-cover bg-center" role="img" :aria-label="`Capa do cartao ${card.title}`" :style="{ backgroundImage: `url(${fullUrl(card.cover_url)})` }" />
 
     <div class="p-2">
       <!-- Labels as colored bars (Trello style) -->
