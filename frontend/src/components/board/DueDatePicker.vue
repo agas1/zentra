@@ -17,6 +17,12 @@ watch(() => props.dueDate, (val) => {
   date.value = val ? val.slice(0, 10) : ''
 })
 
+watch(date, (val) => {
+  if (val) {
+    emit('save', val)
+  }
+})
+
 function save() {
   if (date.value) {
     emit('save', date.value)
@@ -55,10 +61,15 @@ onUnmounted(() => document.removeEventListener('mousedown', onClickOutside))
     <button class="sidebar-btn" :aria-expanded="open" aria-haspopup="dialog" @click="open = !open">
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
       <span class="flex-1 text-left">Data Limite</span>
-      <span v-if="dueDate" class="text-[10px] font-medium" :class="dueCompleted ? 'text-[#3fb950]' : 'text-[#6366f1]'">
-        {{ formatShortDate(dueDate) }}
-      </span>
     </button>
+    <div
+      v-if="dueDate"
+      class="flex items-center gap-1.5 mt-1 px-3 py-1.5 rounded-lg text-xs font-medium"
+      :class="dueCompleted ? 'bg-[#3fb950]/15 text-[#3fb950]' : 'bg-[#6366f1]/15 text-[#a5b4fc]'"
+    >
+      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      {{ formatShortDate(dueDate) }}
+    </div>
 
     <div
       v-if="open"

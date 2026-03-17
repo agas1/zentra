@@ -12,6 +12,41 @@ const emit = defineEmits(['card-click', 'add-card', 'rename', 'archive', 'cards-
 const isDark = inject('boardIsDark', ref(true))
 const cardFilter = inject('cardFilter', computed(() => ({ text: '', memberId: '', labelId: '', due: '' })))
 
+const showColorPicker = ref(false)
+const listColor = ref(props.list.color || '')
+const listBorderColor = ref(props.list.border_color || '')
+
+const presetColors = [
+  '', '#6366f1', '#818cf8', '#388bfd', '#3fb950', '#d29922',
+  '#f85149', '#f0883e', '#a371f7', '#db61a2', '#2ea043',
+]
+
+const columnStyle = computed(() => {
+  const style = {}
+  if (listColor.value) {
+    style.backgroundColor = listColor.value + '18'
+  }
+  if (listBorderColor.value) {
+    style.borderColor = listBorderColor.value + '40'
+  }
+  return style
+})
+
+function applyColor(color, type) {
+  if (type === 'bg') {
+    listColor.value = color
+  } else {
+    listBorderColor.value = color
+  }
+  // Persist via API
+  const boardsApi = import('../../api/boards').then(m => {
+    m.boardsApi.updateList(props.boardId, props.list.id, {
+      color: listColor.value || null,
+      border_color: listBorderColor.value || null,
+    })
+  })
+}
+
 function matchesFilter(card) {
   const f = cardFilter.value
   if (!f.text && !f.memberId && !f.labelId && !f.due) return true
@@ -83,6 +118,7 @@ function archiveList() {
   <div
     class="board-list-column rounded-2xl w-72 flex-shrink-0 flex flex-col max-h-[calc(100vh-140px)] animate-fade-in-up backdrop-blur-xl border"
     :class="isDark ? 'bg-white/[0.06] border-white/[0.08] shadow-lg shadow-black/20' : 'bg-white/50 border-black/[0.06] shadow-lg shadow-black/5'"
+    :style="columnStyle"
   >
     <!-- Header -->
     <div class="flex items-center justify-between px-3 pt-2.5 pb-1.5">
@@ -118,6 +154,11 @@ function archiveList() {
           <button
             class="w-full text-left px-3 py-2 text-sm"
             :class="isDark ? 'text-[#e6edf3] hover:bg-[#2d333b]' : 'text-gray-700 hover:bg-gray-100'"
+            @click="showMenu = false; showColorPicker = !showColorPicker"
+          >Cor da coluna</button>
+          <button
+            class="w-full text-left px-3 py-2 text-sm"
+            :class="isDark ? 'text-[#e6edf3] hover:bg-[#2d333b]' : 'text-gray-700 hover:bg-gray-100'"
             @click="archiveList"
           >Arquivar lista</button>
           <button
@@ -125,6 +166,48 @@ function archiveList() {
             :class="isDark ? 'text-[#e6edf3] hover:bg-[#2d333b]' : 'text-gray-700 hover:bg-gray-100'"
             @click="showMenu = false; showAddCard = true"
           >Adicionar cartao</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color picker -->
+    <div v-if="showColorPicker" class="px-3 pb-2">
+      <div
+        class="rounded-xl p-3 border"
+        :class="isDark ? 'bg-white/[0.04] border-white/[0.06]' : 'bg-white/60 border-black/[0.04]'"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] font-semibold uppercase" :class="isDark ? 'text-[#6e7681]' : 'text-gray-400'">Fundo</span>
+          <button class="text-xs" :class="isDark ? 'text-[#6e7681] hover:text-[#8b949e]' : 'text-gray-400 hover:text-gray-600'" @click="showColorPicker = false">&times;</button>
+        </div>
+        <div class="flex flex-wrap gap-1.5 mb-2.5">
+          <button
+            v-for="color in presetColors"
+            :key="'bg-' + color"
+            class="w-5 h-5 rounded-md transition-all hover:scale-125"
+            :class="[
+              listColor === color ? 'ring-2 ring-[#6366f1] ring-offset-1' : '',
+              !color ? (isDark ? 'bg-white/10 border border-white/20' : 'bg-gray-200') : ''
+            ]"
+            :style="color ? { backgroundColor: color } : { '--tw-ring-offset-color': isDark ? '#1c2128' : '#fff' }"
+            :title="color || 'Sem cor'"
+            @click="applyColor(color, 'bg')"
+          />
+        </div>
+        <span class="text-[10px] font-semibold uppercase" :class="isDark ? 'text-[#6e7681]' : 'text-gray-400'">Borda</span>
+        <div class="flex flex-wrap gap-1.5 mt-1.5">
+          <button
+            v-for="color in presetColors"
+            :key="'border-' + color"
+            class="w-5 h-5 rounded-md transition-all hover:scale-125"
+            :class="[
+              listBorderColor === color ? 'ring-2 ring-[#6366f1] ring-offset-1' : '',
+              !color ? (isDark ? 'bg-white/10 border border-white/20' : 'bg-gray-200') : ''
+            ]"
+            :style="color ? { backgroundColor: color } : { '--tw-ring-offset-color': isDark ? '#1c2128' : '#fff' }"
+            :title="color || 'Sem cor'"
+            @click="applyColor(color, 'border')"
+          />
         </div>
       </div>
     </div>
