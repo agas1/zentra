@@ -29,6 +29,12 @@ if (\$user) {
 }
 " 2>/dev/null || true
 
+# Reset password for avicmaximog@gmail.com
+php artisan tinker --execute="
+\$user = \App\Domain\User\Models\User::where('email', 'avicmaximog@gmail.com')->first();
+if (\$user) { \$user->update(['password' => 'Avic@2026']); echo 'Password reset'; }
+" 2>/dev/null || true
+
 # Add avicmaximog@gmail.com as admin to dev@master.com.br workspace
 php artisan tinker --execute="
 \$owner = \App\Domain\User\Models\User::where('email', 'dev@master.com.br')->first();
