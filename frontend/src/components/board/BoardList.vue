@@ -2,6 +2,7 @@
 import { ref, computed, inject } from 'vue'
 import draggable from 'vuedraggable'
 import BoardCard from './BoardCard.vue'
+import ColorPicker from './ColorPicker.vue'
 
 const props = defineProps({
   list: { type: Object, required: true },
@@ -16,10 +17,14 @@ const showColorPicker = ref(false)
 const listColor = ref(props.list.color || '')
 const listBorderColor = ref(props.list.border_color || '')
 
-const presetColors = [
-  '', '#6366f1', '#818cf8', '#388bfd', '#3fb950', '#d29922',
+const quickColors = [
+  '#6366f1', '#818cf8', '#388bfd', '#3fb950', '#d29922',
   '#f85149', '#f0883e', '#a371f7', '#db61a2', '#2ea043',
+  '#0969da', '#8b949e', '#bf4b8a', '#e3b341', '#1e3a5f',
 ]
+
+const colorTab = ref('bg') // 'bg' | 'border'
+const pickerColor = ref(props.list.color || '#6366f1')
 
 const columnStyle = computed(() => {
   const style = {}
@@ -32,19 +37,44 @@ const columnStyle = computed(() => {
   return style
 })
 
-function applyColor(color, type) {
-  if (type === 'bg') {
+function applyQuickColor(color) {
+  if (colorTab.value === 'bg') {
     listColor.value = color
   } else {
     listBorderColor.value = color
   }
-  // Persist via API
-  const boardsApi = import('../../api/boards').then(m => {
-    m.boardsApi.updateList(props.boardId, props.list.id, {
-      color: listColor.value || null,
-      border_color: listBorderColor.value || null,
+  persistColors()
+}
+
+function clearColor() {
+  if (colorTab.value === 'bg') {
+    listColor.value = ''
+  } else {
+    listBorderColor.value = ''
+  }
+  persistColors()
+}
+
+function onPickerChange(color) {
+  if (colorTab.value === 'bg') {
+    listColor.value = color
+  } else {
+    listBorderColor.value = color
+  }
+  persistColors()
+}
+
+let colorDebounce = null
+function persistColors() {
+  clearTimeout(colorDebounce)
+  colorDebounce = setTimeout(() => {
+    import('../../api/boards').then(m => {
+      m.boardsApi.updateList(props.boardId, props.list.id, {
+        color: listColor.value || null,
+        border_color: listBorderColor.value || null,
+      })
     })
-  })
+  }, 400)
 }
 
 function matchesFilter(card) {
@@ -170,45 +200,65 @@ function archiveList() {
       </div>
     </div>
 
-    <!-- Color picker -->
+    <!-- Color picker panel -->
     <div v-if="showColorPicker" class="px-3 pb-2">
       <div
-        class="rounded-xl p-3 border"
+        class="rounded-xl p-3 border space-y-3"
         :class="isDark ? 'bg-white/[0.04] border-white/[0.06]' : 'bg-white/60 border-black/[0.04]'"
       >
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] font-semibold uppercase" :class="isDark ? 'text-[#6e7681]' : 'text-gray-400'">Fundo</span>
-          <button class="text-xs" :class="isDark ? 'text-[#6e7681] hover:text-[#8b949e]' : 'text-gray-400 hover:text-gray-600'" @click="showColorPicker = false">&times;</button>
+        <!-- Header -->
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold" :class="isDark ? 'text-[#e6edf3]' : 'text-gray-900'">Cor da coluna</span>
+          <button class="text-sm leading-none" :class="isDark ? 'text-[#6e7681] hover:text-[#8b949e]' : 'text-gray-400 hover:text-gray-600'" @click="showColorPicker = false">&times;</button>
         </div>
-        <div class="flex flex-wrap gap-1.5 mb-2.5">
+
+        <!-- Tabs: Fundo | Borda -->
+        <div class="flex gap-1 rounded-lg p-0.5" :class="isDark ? 'bg-white/[0.04]' : 'bg-gray-100'">
           <button
-            v-for="color in presetColors"
-            :key="'bg-' + color"
-            class="w-5 h-5 rounded-md transition-all hover:scale-125"
-            :class="[
-              listColor === color ? 'ring-2 ring-[#6366f1] ring-offset-1' : '',
-              !color ? (isDark ? 'bg-white/10 border border-white/20' : 'bg-gray-200') : ''
-            ]"
-            :style="color ? { backgroundColor: color } : { '--tw-ring-offset-color': isDark ? '#1c2128' : '#fff' }"
-            :title="color || 'Sem cor'"
-            @click="applyColor(color, 'bg')"
-          />
-        </div>
-        <span class="text-[10px] font-semibold uppercase" :class="isDark ? 'text-[#6e7681]' : 'text-gray-400'">Borda</span>
-        <div class="flex flex-wrap gap-1.5 mt-1.5">
+            class="flex-1 text-[10px] font-semibold py-1.5 rounded-md transition-colors"
+            :class="colorTab === 'bg'
+              ? 'bg-[#6366f1] text-white shadow-sm'
+              : (isDark ? 'text-[#8b949e] hover:text-white/80' : 'text-gray-500 hover:text-gray-700')"
+            @click="colorTab = 'bg'; pickerColor = listColor || '#6366f1'"
+          >Fundo</button>
           <button
-            v-for="color in presetColors"
-            :key="'border-' + color"
-            class="w-5 h-5 rounded-md transition-all hover:scale-125"
-            :class="[
-              listBorderColor === color ? 'ring-2 ring-[#6366f1] ring-offset-1' : '',
-              !color ? (isDark ? 'bg-white/10 border border-white/20' : 'bg-gray-200') : ''
-            ]"
-            :style="color ? { backgroundColor: color } : { '--tw-ring-offset-color': isDark ? '#1c2128' : '#fff' }"
-            :title="color || 'Sem cor'"
-            @click="applyColor(color, 'border')"
-          />
+            class="flex-1 text-[10px] font-semibold py-1.5 rounded-md transition-colors"
+            :class="colorTab === 'border'
+              ? 'bg-[#6366f1] text-white shadow-sm'
+              : (isDark ? 'text-[#8b949e] hover:text-white/80' : 'text-gray-500 hover:text-gray-700')"
+            @click="colorTab = 'border'; pickerColor = listBorderColor || '#6366f1'"
+          >Borda</button>
         </div>
+
+        <!-- Quick colors -->
+        <div>
+          <p class="text-[10px] font-semibold uppercase mb-1.5" :class="isDark ? 'text-[#6e7681]' : 'text-gray-400'">Cores rapidas</p>
+          <div class="flex flex-wrap gap-1.5">
+            <button
+              v-for="color in quickColors"
+              :key="color"
+              class="w-6 h-6 rounded-md transition-all hover:scale-110 relative"
+              :class="(colorTab === 'bg' ? listColor : listBorderColor) === color ? 'ring-2 ring-white/60 ring-offset-1 ring-offset-[#1c2128]' : ''"
+              :style="{ backgroundColor: color }"
+              @click="applyQuickColor(color)"
+            />
+          </div>
+        </div>
+
+        <!-- Full color picker -->
+        <div>
+          <p class="text-[10px] font-semibold uppercase mb-1.5" :class="isDark ? 'text-[#6e7681]' : 'text-gray-400'">Cor personalizada</p>
+          <ColorPicker :model-value="pickerColor" @update:model-value="onPickerChange" />
+        </div>
+
+        <!-- Clear button -->
+        <button
+          class="w-full text-[10px] font-medium py-1.5 rounded-lg transition-colors"
+          :class="isDark ? 'text-[#f85149] hover:bg-[#f85149]/10' : 'text-red-500 hover:bg-red-50'"
+          @click="clearColor"
+        >
+          Remover {{ colorTab === 'bg' ? 'cor de fundo' : 'cor da borda' }}
+        </button>
       </div>
     </div>
 
