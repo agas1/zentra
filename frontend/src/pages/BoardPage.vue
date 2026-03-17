@@ -15,6 +15,7 @@ import ColorPicker from '../components/board/ColorPicker.vue'
 import CustomFieldManager from '../components/board/CustomFieldManager.vue'
 import AutomationManager from '../components/board/AutomationManager.vue'
 import GuidedTour from '../components/shared/GuidedTour.vue'
+import AppSelect from '../components/shared/AppSelect.vue'
 
 const route = useRoute()
 const boardsStore = useBoardsStore()
@@ -667,40 +668,40 @@ function onKanbanWheel(e) {
       </div>
 
       <!-- Member filter -->
-      <select
+      <AppSelect
         v-model="filterMemberId"
+        :dark="isDark"
+        size="sm"
+        placeholder="Todos os membros"
         aria-label="Filtrar por membro"
-        class="text-sm py-1.5 px-2 rounded-lg border appearance-none cursor-pointer"
-        :class="isDark ? 'bg-[#0d1117] border-[#444c56] text-[#e6edf3]' : 'bg-white border-gray-300 text-gray-900'"
-      >
-        <option value="">Todos os membros</option>
-        <option v-for="m in workspaceStore.members" :key="m.id" :value="m.id">{{ m.name }}</option>
-      </select>
+        :options="[{ value: '', label: 'Todos os membros' }, ...workspaceStore.members.map(m => ({ value: m.id, label: m.name }))]"
+      />
 
       <!-- Label filter -->
-      <select
+      <AppSelect
         v-model="filterLabelId"
+        :dark="isDark"
+        size="sm"
+        placeholder="Todas as etiquetas"
         aria-label="Filtrar por etiqueta"
-        class="text-sm py-1.5 px-2 rounded-lg border appearance-none cursor-pointer"
-        :class="isDark ? 'bg-[#0d1117] border-[#444c56] text-[#e6edf3]' : 'bg-white border-gray-300 text-gray-900'"
-      >
-        <option value="">Todas as etiquetas</option>
-        <option v-for="l in boardsStore.currentBoard?.labels" :key="l.id" :value="l.id">{{ l.name || l.color }}</option>
-      </select>
+        :options="[{ value: '', label: 'Todas as etiquetas' }, ...(boardsStore.currentBoard?.labels || []).map(l => ({ value: l.id, label: l.name || l.color }))]"
+      />
 
       <!-- Due filter -->
-      <select
+      <AppSelect
         v-model="filterDue"
+        :dark="isDark"
+        size="sm"
+        placeholder="Qualquer prazo"
         aria-label="Filtrar por prazo"
-        class="text-sm py-1.5 px-2 rounded-lg border appearance-none cursor-pointer"
-        :class="isDark ? 'bg-[#0d1117] border-[#444c56] text-[#e6edf3]' : 'bg-white border-gray-300 text-gray-900'"
-      >
-        <option value="">Qualquer prazo</option>
-        <option value="overdue">Atrasados</option>
-        <option value="today">Vence hoje</option>
-        <option value="week">Proximos 7 dias</option>
-        <option value="none">Sem prazo</option>
-      </select>
+        :options="[
+          { value: '', label: 'Qualquer prazo' },
+          { value: 'overdue', label: 'Atrasados' },
+          { value: 'today', label: 'Vence hoje' },
+          { value: 'week', label: 'Proximos 7 dias' },
+          { value: 'none', label: 'Sem prazo' },
+        ]"
+      />
 
       <!-- Clear -->
       <button

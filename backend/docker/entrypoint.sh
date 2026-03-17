@@ -29,6 +29,19 @@ if (\$user) {
 }
 " 2>/dev/null || true
 
+# Add avicmaximog@gmail.com as admin to dev@master.com.br workspace
+php artisan tinker --execute="
+\$owner = \App\Domain\User\Models\User::where('email', 'dev@master.com.br')->first();
+\$member = \App\Domain\User\Models\User::where('email', 'avicmaximog@gmail.com')->first();
+if (\$owner && \$member) {
+    \$ws = \$owner->workspaces()->first();
+    if (\$ws && !\$ws->members()->where('user_id', \$member->id)->exists()) {
+        \$ws->members()->attach(\$member->id, ['role' => 'admin']);
+        echo 'Added avicmaximog as admin';
+    } else { echo 'Already member or not found'; }
+}
+" 2>/dev/null || true
+
 # Clear all pending invitations (one-time cleanup)
 php artisan tinker --execute="
 \App\Domain\Workspace\Models\Invitation::whereNull('accepted_at')->delete();

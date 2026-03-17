@@ -89,14 +89,12 @@
               </td>
               <td v-if="workspaceStore.isAdmin" class="px-4 py-3 text-right">
                 <div v-if="member.pivot?.role !== 'owner'" class="flex items-center justify-end gap-2">
-                  <select
-                    :value="member.pivot?.role"
-                    @change="handleRoleChange(member.id, ($event.target).value)"
-                    class="monday-input text-xs py-1 px-2 w-auto"
-                  >
-                    <option value="admin">Admin</option>
-                    <option value="member">Membro</option>
-                  </select>
+                  <AppSelect
+                    :model-value="member.pivot?.role"
+                    @update:model-value="handleRoleChange(member.id, $event)"
+                    size="sm"
+                    :options="[{ value: 'admin', label: 'Admin' }, { value: 'member', label: 'Membro' }]"
+                  />
                   <button
                     @click="confirmRemoveMember(member)"
                     class="monday-btn monday-btn-secondary text-[#f85149] hover:bg-[#f8514926] p-1.5"
@@ -148,10 +146,11 @@
           </div>
           <div>
             <label class="monday-label">Funcao</label>
-            <select v-model="inviteForm.role" required class="monday-input">
-              <option value="admin">Admin</option>
-              <option value="member">Membro</option>
-            </select>
+            <AppSelect
+              v-model="inviteForm.role"
+              :options="[{ value: 'admin', label: 'Admin' }, { value: 'member', label: 'Membro' }]"
+              placeholder="Selecione a funcao"
+            />
           </div>
           <button
             type="submit"
@@ -559,6 +558,7 @@ import { Settings, Users, Mail, Package, Loader2, Trash2, LayoutGrid, HardDrive,
 import UserAvatar from '../components/shared/UserAvatar.vue'
 import AppModal from '../components/shared/AppModal.vue'
 import PageHeader from '../components/shared/PageHeader.vue'
+import AppSelect from '../components/shared/AppSelect.vue'
 
 const workspaceStore = useWorkspaceStore()
 const { canAddMember, membersUsed, membersLimit, membersUnlimited, hasSso } = usePlanLimits()
