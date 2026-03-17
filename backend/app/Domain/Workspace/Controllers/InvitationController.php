@@ -78,9 +78,10 @@ class InvitationController extends Controller
             'expires_at' => now()->addDays(7),
         ]);
 
-        $frontendUrl = config('app.frontend_url', env('FRONTEND_URL', 'http://localhost:5173'));
+        $frontendUrl = config('app.frontend_url', 'http://localhost:5173');
         $acceptUrl = $frontendUrl . '/invitation/' . $invitation->token;
 
+        $emailError = null;
         try {
             Mail::to($email)->send(new InvitationMail(
                 invitation: $invitation,
@@ -89,12 +90,13 @@ class InvitationController extends Controller
                 acceptUrl: $acceptUrl,
             ));
         } catch (\Throwable $e) {
-            \Log::warning('Failed to send invitation email: ' . $e->getMessage());
+            $emailError = $e->getMessage();
+            \Log::warning('Failed to send invitation email: ' . $emailError);
         }
 
         return response()->json([
             'data' => $invitation,
-            'message' => 'Invitation sent successfully',
+            'message' => $emailError ? 'Invitation created but email failed: ' . $emailError : 'Invitation sent successfully',
         ], 201);
     }
 
