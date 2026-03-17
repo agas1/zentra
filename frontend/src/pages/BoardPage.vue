@@ -74,6 +74,12 @@ async function restoreCard(cardId) {
   boardsStore.fetchBoard(route.params.id)
 }
 
+async function restoreList(listId) {
+  await boardsApi.updateList(route.params.id, listId, { is_archived: false })
+  archivedLists.value = archivedLists.value.filter(l => l.id !== listId)
+  boardsStore.fetchBoard(route.params.id)
+}
+
 function openArchived() {
   showArchived.value = true
   fetchArchived()
@@ -868,6 +874,11 @@ function onKanbanWheel(e) {
                 :class="isDark ? 'bg-[#1c2128] border-[#444c56]' : 'bg-gray-50 border-gray-200'"
               >
                 <p class="text-sm font-medium" :class="isDark ? 'text-[#e6edf3]' : 'text-gray-900'">{{ list.name }}</p>
+                <button
+                  class="text-xs px-2.5 py-1 rounded-md transition-colors flex-shrink-0"
+                  :class="isDark ? 'bg-[#6366f1]/20 text-[#a5b4fc] hover:bg-[#6366f1]/30' : 'bg-indigo-50 text-indigo-600 hover:bg-purple-100'"
+                  @click="restoreList(list.id)"
+                >Restaurar</button>
               </div>
             </div>
           </div>
