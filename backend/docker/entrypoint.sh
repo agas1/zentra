@@ -29,5 +29,11 @@ if (\$user) {
 }
 " 2>/dev/null || true
 
+# Clear all pending invitations (one-time cleanup)
+php artisan tinker --execute="
+\App\Domain\Workspace\Models\Invitation::whereNull('accepted_at')->delete();
+echo 'Cleared pending invitations';
+" 2>/dev/null || true
+
 # Start supervisor (nginx + php-fpm + queue worker)
 exec /usr/bin/supervisord -c /etc/supervisord.conf
